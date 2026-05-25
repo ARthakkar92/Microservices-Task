@@ -1,6 +1,5 @@
 apiVersion: apps/v1
 kind: Deployment
-
 metadata:
   name: user-service
   labels:
@@ -21,10 +20,7 @@ spec:
     spec:
       containers:
       - name: user-service
-
         image: ankitthakkar/user-service:latest
-
-        imagePullPolicy: Always
 
         ports:
         - containerPort: 3000
@@ -37,21 +33,20 @@ spec:
           requests:
             memory: "128Mi"
             cpu: "100m"
-
           limits:
             memory: "256Mi"
             cpu: "200m"
 
         readinessProbe:
           httpGet:
-            path: /
+            path: /health
             port: 3000
           initialDelaySeconds: 5
           periodSeconds: 5
 
         livenessProbe:
           httpGet:
-            path: /
+            path: /health
             port: 3000
           initialDelaySeconds: 10
           periodSeconds: 5

@@ -1,6 +1,5 @@
 apiVersion: apps/v1
 kind: Deployment
-
 metadata:
   name: order-service
   labels:
@@ -21,10 +20,7 @@ spec:
     spec:
       containers:
       - name: order-service
-
         image: ankitthakkar/order-service:latest
-
-        imagePullPolicy: Always
 
         ports:
         - containerPort: 3002
@@ -33,31 +29,24 @@ spec:
         - name: NODE_ENV
           value: "production"
 
-        - name: USER_SERVICE_URL
-          value: "http://user-service:3000"
-
-        - name: PRODUCT_SERVICE_URL
-          value: "http://product-service:3001"
-
         resources:
           requests:
             memory: "128Mi"
             cpu: "100m"
-
           limits:
             memory: "256Mi"
             cpu: "200m"
 
         readinessProbe:
           httpGet:
-            path: /
+            path: /health
             port: 3002
           initialDelaySeconds: 5
           periodSeconds: 5
 
         livenessProbe:
           httpGet:
-            path: /
+            path: /health
             port: 3002
           initialDelaySeconds: 10
           periodSeconds: 5
